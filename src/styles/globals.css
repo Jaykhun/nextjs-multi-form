@@ -16,12 +16,21 @@
   }
 }
 
+
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #1F1F28;
+  color: #D3BD84;
+  font-weight: 600;
+}
+
+input {
+  background-color: transparent;
+  outline: none;
+  border: 2px solid #372F3F;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+button {
+  border-radius: 6px;
 }
