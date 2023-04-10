@@ -2,7 +2,8 @@ import OtherInfo from '@/components/screens/OtherInfo'
 import PersonalInfo from '@/components/screens/PersonalInfo'
 import SignUpInfo from '@/components/screens/SignUpInfo'
 import { UserState } from '@/models/userModel'
-import { useState } from 'react'
+import axios from 'axios'
+import { FormEvent, useState } from 'react'
 
 const HomaPage = () => {
     const [page, setPage] = useState(0)
@@ -34,6 +35,21 @@ const HomaPage = () => {
     }
     const handlePrev = () => setPage(prevState => prevState - 1)
 
+    const handleSubmit = async (evt:FormEvent<HTMLFormElement>) => {
+        evt.preventDefault()
+        try {
+            await axios({
+                url: '/api/user',
+                method: 'POST',
+                data: userData
+            })
+        }
+
+        catch (e: any) {
+            console.error(e)
+        }
+    }
+
     return (
         <div className='display: flex justify-center gap-4 mt-7'>
             <div className='display: flex justify-center flex-col gap-5 w-2/6'>
@@ -49,24 +65,26 @@ const HomaPage = () => {
 
                 <div className="title text-2xl">{pageTitles[page]}</div>
 
-                <form className='form display: flex justify-center flex-col gap-3'>
+                <form className='form display: flex justify-center flex-col gap-3' onSubmit={(e: FormEvent<HTMLFormElement>) => handleSubmit(e)}>
                     {PageDisplay()}
+
+                    <div className='form__buttons display: flex gap-5 w-full'>
+                        <button type='button'
+                            onClick={handlePrev}
+                            disabled={page === 0}
+                            className='display: block w-full mt-5 bg-cyan-950 p-4'>
+                            Prev
+                        </button>
+
+                        <button type={`${page === pageTitles.length - 1 ? 'submit' : 'button'}`}
+                            onClick={handleNext}
+                            className='w-full mt-5 bg-cyan-950 p-4'>
+                            {page === pageTitles.length - 1 ? 'Submit' : 'Next'}
+                        </button>
+                    </div>
                 </form>
 
-                <div className='form__buttons display: flex gap-5 w-full'>
-                    <button type="submit"
-                        onClick={handlePrev}
-                        disabled={page === 0}
-                        className='display: block w-full mt-5 bg-cyan-950 p-4'>
-                        Prev
-                    </button>
 
-                    <button type="submit"
-                        onClick={handleNext}
-                        className='w-full mt-5 bg-cyan-950 p-4'>
-                        {page === pageTitles.length - 1 ? 'Submit' : 'Next'}
-                    </button>
-                </div>
             </div>
         </div >
     )
